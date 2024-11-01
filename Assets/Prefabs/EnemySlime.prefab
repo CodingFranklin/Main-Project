@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7022578415404801111}
   - component: {fileID: 2117774444915465780}
   - component: {fileID: 6306468635066730636}
+  - component: {fileID: -3834048283566585390}
   - component: {fileID: 495689512941853580}
   m_Layer: 0
   m_Name: EnemySlime
@@ -153,6 +154,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &-3834048283566585390
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3421322307820091330}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
 --- !u!114 &495689512941853580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,5 +194,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2
-  player: {fileID: 7235822756410406252, guid: 96b7c17fa4fcf3947b9e5b1f1439128b, type: 3}
-  health: 0
+  XP: {fileID: 5381786828086879555, guid: 73fad1aff0453e14a9ab7754be7dd367, type: 3}

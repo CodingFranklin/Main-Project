@@ -5,20 +5,20 @@ using UnityEngine;
 public class PlayerAnimation : MonoBehaviour
 {
     Animator animator;
-    PlayerMovement playerMovement;
+    PlayerController playerController;
     SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        playerMovement = GetComponent<PlayerMovement>();
+        playerController = GetComponent<PlayerController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (playerMovement.moveDirection.x != 0 || playerMovement.moveDirection.y != 0)
+        if (playerController.moveDirection.x != 0 || playerController.moveDirection.y != 0)
         {
             animator.SetBool("Move", true);
 
@@ -32,7 +32,7 @@ public class PlayerAnimation : MonoBehaviour
 
     void SpriteDirectionChecker()
     {
-        if (playerMovement.previousHorizontalVector < 0)
+        if (playerController.previousHorizontalVector < 0)
         {
             spriteRenderer.flipX = true;
         }

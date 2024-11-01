@@ -6,6 +6,12 @@ TagManager:
   tags:
   - Gun_1
   - Enemy
+  - Bullet
+  - Heart1
+  - Heart2
+  - Heart3
+  - Heart4
+  - Heart5
   layers:
   - Default
   - TransparentFX

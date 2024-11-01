@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 14ff4d0fc83a0a34285992894539af73
+guid: fb5a26d17d539004ba595d95b73e8183
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,211 +97,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: atlas_walls_low-16x16_0
+      name: weapons_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 16
-        width: 16
+        x: 17
+        y: 32
+        width: 14
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 57d1c3da2fc63b64396f424655d501d9
-      internalID: 1434489713
+      spriteID: 9e34e0fac8064334cbd7d393b99f8d7c
+      internalID: -1726445314
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_walls_low-16x16_1
+      name: weapons_1
       rect:
         serializedVersion: 2
         x: 53
-        y: 48
-        width: 16
+        y: 32
+        width: 7
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6c3f1365b1f976446a1d0e09d0e65c67
-      internalID: -1299981498
+      spriteID: 66e404bda4d9f83478bdb6f7bfc597c3
+      internalID: 1779002892
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_walls_low-16x16_2
+      name: weapons_2
       rect:
         serializedVersion: 2
-        x: 53
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e7bbfacf02d10ce4797c859804651905
-      internalID: 162982021
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atlas_walls_low-16x16_3
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: c9f4e7514ae59024b922b88fa5f9bee4
-      internalID: 2118416717
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atlas_walls_low-16x16_4
-      rect:
-        serializedVersion: 2
-        x: 123
+        x: 80
         y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d3ec1a421825674d8dab83fb2920ff7
-      internalID: 587366237
+      spriteID: ac9ca2f6c19904b4c9d710ad2a80be10
+      internalID: -252448720
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_walls_low-16x16_5
+      name: weapons_3
       rect:
         serializedVersion: 2
-        x: 5
+        x: 112
+        y: 32
+        width: 20
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 223b1bc297fc18f40905cf596bced5bb
+      internalID: 179627453
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: weapons_4
+      rect:
+        serializedVersion: 2
+        x: 176
         y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ce3cb779d0c3492409ee043485a9dcbe
-      internalID: -30677359
+      spriteID: 20a7310f22efdbe49b55bf66db5e9b0c
+      internalID: -884694064
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: atlas_walls_low-16x16_7
+      name: weapons_5
       rect:
         serializedVersion: 2
-        x: 139
-        y: 0
+        x: 144
+        y: 32
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 876d5d763944e1643bc1ed289a818ff3
-      internalID: 219113637
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atlas_walls_low-16x16_8
-      rect:
-        serializedVersion: 2
-        x: 21
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 87ed255fb43d0484186034032bd2f286
-      internalID: -1397424884
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atlas_walls_low-16x16_9
-      rect:
-        serializedVersion: 2
-        x: 43
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 29f24cccc070f62478de2e2980d27a34
-      internalID: 1849571869
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: atlas_walls_low-16x16_10
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e90005dd574bb0742bc4bf6d777dd3df
-      internalID: 532589910
+      spriteID: ec9e50509186b004390f798ccd8e11de
+      internalID: -2016276436
       vertices: []
       indices: 
       edges: []
@@ -317,17 +233,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      atlas_walls_low-16x16_0: 1434489713
-      atlas_walls_low-16x16_1: -1299981498
-      atlas_walls_low-16x16_10: 532589910
-      atlas_walls_low-16x16_2: 162982021
-      atlas_walls_low-16x16_3: 2118416717
-      atlas_walls_low-16x16_4: 587366237
-      atlas_walls_low-16x16_5: -30677359
-      atlas_walls_low-16x16_6: 534570694
-      atlas_walls_low-16x16_7: 219113637
-      atlas_walls_low-16x16_8: -1397424884
-      atlas_walls_low-16x16_9: 1849571869
+      weapons_0: -1726445314
+      weapons_1: 1779002892
+      weapons_2: -252448720
+      weapons_3: 179627453
+      weapons_4: -884694064
+      weapons_5: -2016276436
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

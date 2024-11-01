@@ -4,32 +4,38 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    GunController gunController;
+    Pistol pistol;
     Vector3 direction;
+    float range;
+    Vector3 initialPosition;
 
     [SerializeField] float speed;
-    [SerializeField] float damage;
 
+    
     
 
     // Start is called before the first frame update
     void Start()
     {
-        gunController = GameObject.FindGameObjectWithTag("Gun_1").GetComponent<GunController>();
-        direction = gunController.shootingDirection;
+        range = GameManager.instance.bulletRange;
+        pistol = GameObject.FindGameObjectWithTag("Gun_1").GetComponent<Pistol>();
+        direction = pistol.shootingDirection;
+
+        initialPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
         transform.position += direction.normalized * speed * Time.deltaTime;
-    }
+        
 
-    private void OnCollisionEnter2D(Collision2D other) 
-    {
-        if (other.gameObject.tag == "Enemy")
+        float distanceTraveled = Vector3.Distance(initialPosition, transform.position);
+        if (distanceTraveled > range)
         {
-            
+            Destroy(gameObject);
         }
     }
+
+
 }
