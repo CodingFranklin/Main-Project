@@ -1,26 +1,47 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Spwaner : MonoBehaviour
 {
-    public float spawnRate = 0.5f;
     [SerializeField] GameObject slime;
-    float xMin;
-    float xMax;
-    float yMin;
-    float yMax;
+    [SerializeField] GameObject devil;
+
+
+    [SerializeField] GameObject top;
+    [SerializeField] GameObject bottom;
+    [SerializeField] GameObject left;
+    [SerializeField] GameObject right;
+    [SerializeField] GameObject topLeft;
+    [SerializeField] GameObject bottomLeft;
+    [SerializeField] GameObject topRight;
+    [SerializeField] GameObject bottomRight;
+
+
+    List<GameObject> spawnPoints = new List<GameObject>();
+    List<GameObject> enemies = new List<GameObject>();
 
 
     // Start is called before the first frame update
     void Start()
-    {
-        xMin = Camera.main.ViewportToWorldPoint(new Vector3(-1.5f, 0, 0)).x;
-        xMax = Camera.main.ViewportToWorldPoint(new Vector3(2.5f, 0, 0)).x;
-        yMin = Camera.main.ViewportToWorldPoint(new Vector3(0, 2.5f, 0)).y;
-        yMax = Camera.main.ViewportToWorldPoint(new Vector3(0, -1.5f, 0)).y;
+    {   
         
-        InvokeRepeating("SpawnEnemy", 0, spawnRate);
+        spawnPoints.Add(top);
+        spawnPoints.Add(bottom);
+        spawnPoints.Add(left);
+        spawnPoints.Add(right);
+        spawnPoints.Add(topLeft);
+        spawnPoints.Add(topRight);
+        spawnPoints.Add(bottomLeft);
+        spawnPoints.Add(bottomRight);
+
+        enemies.Add(slime);
+        enemies.Add(devil);
+
+        
+        InvokeRepeating("SpawnEnemy", 0, GameManager.instance.spawnRate);
     }
 
     // Update is called once per frame
@@ -32,9 +53,9 @@ public class Spwaner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        float randonNumX = Random.Range(xMin, xMax);
-        float randonNumY = Random.Range(yMin, yMax);
+        int randomSP = UnityEngine.Random.Range(0,spawnPoints.Count);
+        int randomEnemy = UnityEngine.Random.Range(0,enemies.Count);
 
-        Instantiate(slime, new Vector3(randonNumX, randonNumY, 0), Quaternion.identity);
+        Instantiate(enemies[randomEnemy], spawnPoints[randomSP].transform.position, Quaternion.identity);
     }
 }

@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
     //
     void PlayerGetHit()
     {
-        Debug.Log("player get hitted!");
+        Debug.Log("player get hit");
         Collider2D[] knockBackEnemies = Physics2D.OverlapCircleAll(transform.position, knockBackRadius);
 
         foreach (Collider2D enemy in knockBackEnemies)

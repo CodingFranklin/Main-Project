@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Pistol : MonoBehaviour
 {
@@ -11,12 +12,10 @@ public class Pistol : MonoBehaviour
     Vector3 worldMousePositioin;
     Vector3 mouseDirection;
     public Vector3 shootingDirection;
-    bool isCoolDown;
-    float coolDownTime;
-    float ammoCapacity;
     float currentAmmo;
     bool isReloading;
     float reloadTime;
+    float canFire = -1f;
 
     [SerializeField] Transform firePoint;
     [SerializeField] GameObject bullet;
@@ -27,10 +26,8 @@ public class Pistol : MonoBehaviour
     {
         playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        isCoolDown = false;
-        coolDownTime = GameManager.instance.gunCoolDownTime;
-        ammoCapacity = GameManager.instance.ammoCapacity;
-        currentAmmo = ammoCapacity;
+        isReloading = false;
+        currentAmmo = GameManager.instance.ammoCapacity;
     }
 
     // Update is called once per frame
@@ -38,17 +35,6 @@ public class Pistol : MonoBehaviour
     {
         SpriteDirectionChecker();
         reloadTime = GameManager.instance.reloadTime;
-        
-
-        if (Input.GetButtonDown("Fire1") || Input.GetButton("Fire1"))
-        {
-            Shoot();
-            shootingDirection = mouseDirection;
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Reload();
-        }
 
         //Calculating the mouse direction for the gun to follow
         mousePosition = Input.mousePosition;
@@ -56,6 +42,31 @@ public class Pistol : MonoBehaviour
         mouseDirection = worldMousePositioin - transform.position;
         mouseDirection.z = 0f;
         RotateGunToMouse();
+
+        
+        
+
+        if (Input.GetButtonDown("Fire1") || Input.GetButton("Fire1"))
+        {
+            shootingDirection = mouseDirection;
+
+            //make sure it won't reload many times
+            if (isReloading)
+            {
+                return;
+            }
+
+
+            Shoot();
+            if (currentAmmo == 0)
+            {
+                Reload();
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Reload();
+        }
 
 
         AmmoChecker();
@@ -75,11 +86,11 @@ public class Pistol : MonoBehaviour
 
     void Shoot()
     {
-        if (!isCoolDown && !isReloading && currentAmmo > 0)
+        if (!isReloading && currentAmmo > 0 && Time.time > canFire)
         {
+            canFire = Time.time + GameManager.instance.gunFireRate;
             Instantiate(bullet, firePoint.position, firePoint.rotation);
             currentAmmo--;
-            StartCoroutine(ShootCoolDown());
         }
         
     }
@@ -87,7 +98,6 @@ public class Pistol : MonoBehaviour
     void Reload()
     {
         StartCoroutine(Reloading());
-        currentAmmo = ammoCapacity;
     }
 
     void RotateGunToMouse()
@@ -97,22 +107,26 @@ public class Pistol : MonoBehaviour
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
-    IEnumerator ShootCoolDown()
-    {
-        isCoolDown = true;
-        yield return new WaitForSeconds(coolDownTime);
-        isCoolDown = false;
-    }
-
     IEnumerator Reloading()
     {
         isReloading = true;
         yield return new WaitForSeconds(reloadTime);
+
+        currentAmmo = GameManager.instance.ammoCapacity;
+
         isReloading = false;
     }
 
     void AmmoChecker()
     {
-        ammoText.text = "" + currentAmmo;
+        if (!isReloading)
+        {
+            ammoText.text = "" + currentAmmo;
+        }
+        else if (isReloading)
+        {
+            ammoText.text = "Reloading...";
+        }
+        
     }
 }

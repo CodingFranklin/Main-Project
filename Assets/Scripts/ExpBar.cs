@@ -34,31 +34,38 @@ public class ExpBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Debug.Log(ExpPercentage);
         currentExp = GameManager.instance.currentExp;
         currentLevel = GameManager.instance.level;
 
         ExpPercentage = currentExp / maxExp;
         // moveDistance = maxWidth * (ExpAmount / maxExp) / 2;
 
+        if(GameManager.instance.isLevelUp || Mathf.Approximately(Time.timeScale, 0))
+        {
+            return;
+        }
+
         if (currentExp > previousExp && currentLevel == previousLevel)
         {
             rt.sizeDelta = new Vector2(maxWidth * ExpPercentage, maxHeight);
+            
 
-            currentExp = previousExp;
+            previousExp = currentExp;
         }
+
+        
         
         else if(currentLevel > previousLevel)
         {
             rt.sizeDelta = new Vector2(maxWidth * ExpPercentage, maxHeight);
+            
+            Debug.Log("Level Changing!!");
 
-            currentExp = previousExp;
-            currentLevel = previousLevel;
+            previousExp = currentExp;
+            previousLevel = currentLevel;
+
+            GameManager.instance.isLevelUp = true;
         }
-
-
-        
 
     }
 }

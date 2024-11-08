@@ -6,10 +6,11 @@ public class Bullet : MonoBehaviour
 {
     Pistol pistol;
     Vector3 direction;
+
     float range;
     Vector3 initialPosition;
 
-    [SerializeField] float speed;
+    float speed;
 
     
     
@@ -18,6 +19,7 @@ public class Bullet : MonoBehaviour
     void Start()
     {
         range = GameManager.instance.bulletRange;
+        speed = GameManager.instance.bulletSpeed;
         pistol = GameObject.FindGameObjectWithTag("Gun_1").GetComponent<Pistol>();
         direction = pistol.shootingDirection;
 
@@ -27,6 +29,10 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        range = GameManager.instance.bulletRange;
+        speed = GameManager.instance.bulletSpeed;
+
+
         transform.position += direction.normalized * speed * Time.deltaTime;
         
 
@@ -37,5 +43,12 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if (other.gameObject.tag == "Enemy")
+        {
+            other.GetComponent<Enemy>().TakeDamage(GameManager.instance.bulletDamage);
+        }
+    }
 
 }

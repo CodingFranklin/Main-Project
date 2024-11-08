@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Slime : Enemy
+public class Devil : Enemy
 {
     [SerializeField] float moveSpeed;
+    SpriteRenderer spriteRenderer;
+    float previousHorizontalVector;
     float currentHealth;
 
     
@@ -14,12 +16,19 @@ public class Slime : Enemy
     protected override void Start()
     {
         base.Start();
-        currentHealth = GameManager.instance.slimeHealth;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        currentHealth = GameManager.instance.devilHealth;
     }
 
     private void Update() 
     {
         Move(moveSpeed);
+
+        if (direction.x != 0)
+        {
+            previousHorizontalVector = direction.x;
+        }
+        SpriteDirectionChecker();
     }
 
     protected override void Move(float moveSpeed)
@@ -49,6 +58,18 @@ public class Slime : Enemy
         {
             TakeDamage(GameManager.instance.bulletDamage);
             Destroy(other.gameObject);
+        }
+    }
+
+    void SpriteDirectionChecker()
+    {
+        if (previousHorizontalVector < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
         }
     }
 }
