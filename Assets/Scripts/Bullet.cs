@@ -18,13 +18,10 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        range = GameManager.instance.bulletRange;
-        speed = GameManager.instance.bulletSpeed;
-        pistol = GameObject.FindGameObjectWithTag("Gun_1").GetComponent<Pistol>();
-        direction = pistol.shootingDirection;
-
-        initialPosition = transform.position;
+        
     }
+
+    
 
     // Update is called once per frame
     void Update()
@@ -41,6 +38,15 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Instantiate(Vector3 dir)
+    {
+        range = GameManager.instance.bulletRange;
+        speed = GameManager.instance.bulletSpeed;
+        direction = dir;
+
+        initialPosition = transform.position;
     }
 
     private void OnTriggerEnter2D(Collider2D other) 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
@@ -16,9 +17,12 @@ public class Pistol : MonoBehaviour
     bool isReloading;
     float reloadTime;
     float canFire = -1f;
+    float shootLevel = 1f;
 
     [SerializeField] Transform firePoint;
-    [SerializeField] GameObject bullet;
+    [SerializeField] GameObject bullet1;
+    [SerializeField] GameObject bullet2;
+    [SerializeField] GameObject bullet3;
     [SerializeField] Transform player;
     [SerializeField] TextMeshProUGUI ammoText;
     // Start is called before the first frame update
@@ -35,6 +39,7 @@ public class Pistol : MonoBehaviour
     {
         SpriteDirectionChecker();
         reloadTime = GameManager.instance.reloadTime;
+        shootLevel = GameManager.instance.shootLevel;
 
         //Calculating the mouse direction for the gun to follow
         mousePosition = Input.mousePosition;
@@ -42,6 +47,12 @@ public class Pistol : MonoBehaviour
         mouseDirection = worldMousePositioin - transform.position;
         mouseDirection.z = 0f;
         RotateGunToMouse();
+
+
+        if (GameManager.instance.isGameOver)
+        {
+            return;
+        }
 
         
         
@@ -89,10 +100,43 @@ public class Pistol : MonoBehaviour
         if (!isReloading && currentAmmo > 0 && Time.time > canFire)
         {
             canFire = Time.time + GameManager.instance.gunFireRate;
-            Instantiate(bullet, firePoint.position, firePoint.rotation);
+
+            if (shootLevel == 1)
+            {
+                GameObject spawnBullet = Instantiate(bullet1, firePoint.position, firePoint.rotation);
+                spawnBullet.GetComponent<Bullet>().Instantiate(mouseDirection);
+            }
+            else if (shootLevel == 2)
+            {
+                Vector3 leftDirection = Quaternion.AngleAxis(15, Vector3.forward) * mouseDirection;
+                Vector3 rightDirection = Quaternion.AngleAxis(-15, Vector3.forward) * mouseDirection;
+
+
+                //left
+                GameObject spawnBullet1 = Instantiate(bullet2, firePoint.position, firePoint.rotation);
+                spawnBullet1.GetComponent<Bullet>().Instantiate(leftDirection);
+                //right
+                GameObject spawnBullet2 = Instantiate(bullet2, firePoint.position, firePoint.rotation);
+                spawnBullet2.GetComponent<Bullet>().Instantiate(rightDirection);
+            }
+            else if (shootLevel >= 3)
+            {
+                Vector3 leftDirection = Quaternion.AngleAxis(15, Vector3.forward) * mouseDirection;
+                Vector3 rightDirection = Quaternion.AngleAxis(-15, Vector3.forward) * mouseDirection;
+
+                //left
+                GameObject spawnBullet1 = Instantiate(bullet3, firePoint.position, firePoint.rotation);
+                spawnBullet1.GetComponent<Bullet>().Instantiate(leftDirection);
+                //middle
+                GameObject spawnBullet2 = Instantiate(bullet3, firePoint.position, firePoint.rotation);
+                spawnBullet2.GetComponent<Bullet>().Instantiate(mouseDirection);
+                //right
+                GameObject spawnBullet3 = Instantiate(bullet3, firePoint.position, firePoint.rotation);
+                spawnBullet3.GetComponent<Bullet>().Instantiate(rightDirection);
+            }
+
             currentAmmo--;
         }
-        
     }
 
     void Reload()

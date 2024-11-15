@@ -23,6 +23,8 @@ public class Spwaner : MonoBehaviour
     List<GameObject> spawnPoints = new List<GameObject>();
     List<GameObject> enemies = new List<GameObject>();
 
+    float canSpawn = -1f;
+
 
     // Start is called before the first frame update
     void Start()
@@ -39,15 +41,20 @@ public class Spwaner : MonoBehaviour
 
         enemies.Add(slime);
         enemies.Add(devil);
+        enemies.Add(slime);
 
         
-        InvokeRepeating("SpawnEnemy", 0, GameManager.instance.spawnRate);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Time.time > canSpawn)
+        {
+            canSpawn = Time.time + GameManager.instance.spawnRate;
+            SpawnEnemy();
+        }
     }
 
 

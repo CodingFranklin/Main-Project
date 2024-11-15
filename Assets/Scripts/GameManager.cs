@@ -11,33 +11,39 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
 
+    //Player 
     public float currentPlayerHealth;
     public float maxPlayerHealth;
-    public float maxEnemyHealth;
+    public float knockBackDuation;
+
+    //Enemy
     public float slimeHealth;
     public float devilHealth;
+    public float enemyDamage;
+
+    //Weapon
     public float bulletDamage;
     public float bulletRange;
     public float bulletSpeed;
     public float gunFireRate;
-    public float enemyDamage;
-    public bool isGameOver;
-    public float totalTime = 300f;
+    public float ammoCapacity;
+    public float reloadTime;
+    public float shootLevel;
+    
+    //Exp
     public float ExpAmount ;
     public float currentExp;
     public float maxExp;
     public float level;
-    public bool isLevelUp;
-    public float ammoCapacity;
-    public float reloadTime;
     public float ExpPickUpRange;
+
+    //Game Management
     public float spawnRate;
-
-
-
+    public float totalTime = 300f;
+    public bool isLevelUp;
+    public bool isGameOver;
+    
     List<String> upgradeOptions = new List<string>();
-
-
 
 
     [SerializeField] UnityEngine.UI.Image heart1;
@@ -45,7 +51,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image heart3;
     [SerializeField] UnityEngine.UI.Image heart4;
     [SerializeField] UnityEngine.UI.Image heart5;
-    [SerializeField] GameObject gameOverText;
+    [SerializeField] GameObject gameOverPage;
+    [SerializeField] TextMeshProUGUI gameOverText;
     [SerializeField] RectTransform mouseIcon;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] TextMeshProUGUI timerText;
@@ -81,6 +88,7 @@ public class GameManager : MonoBehaviour
         upgradeOptions.Add("Ammo Capacity + 30%");
         upgradeOptions.Add("Reload Time - 20%");
         upgradeOptions.Add("Bullet Speed + 50%");
+        upgradeOptions.Add("Bullet + 1");
     }
 
     // Update is called once per frame
@@ -98,8 +106,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-
-        if (currentPlayerHealth == 0)
+        if (totalTime <= 0 || currentPlayerHealth <= 0)
         {
             isGameOver = true;
         }
@@ -107,9 +114,13 @@ public class GameManager : MonoBehaviour
         if (isGameOver)
         {
             GameOver();
+            return;
         }
 
+        
+
         HealthChecker();
+        DifficultyHandler();
         
 
         if (totalTime > 0)
@@ -166,14 +177,27 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        gameOverText.SetActive(true);
+        if (currentPlayerHealth > 0)
+        {
+            gameOverText.text = "Victory!";
+        }
+        gameOverPage.SetActive(true);
+        PauseGame();
+        Cursor.visible = true;
     }
 
     void UpdateTimerText()
     {
         int minutes = Mathf.FloorToInt(totalTime / 60);
         int seconds = Mathf.FloorToInt(totalTime % 60);
-        timerText.text = minutes + ":" + seconds;
+        if (seconds < 10)
+        {
+            timerText.text = minutes + ":0" + seconds;
+        }
+        else
+        {
+            timerText.text = minutes + ":" + seconds;
+        }
     }
 
     void HealthChecker()
@@ -319,6 +343,65 @@ public class GameManager : MonoBehaviour
         {
             bulletSpeed += bulletSpeed * 0.5f;
         }
+        else if (choice.Equals("Bullet + 1"))
+        {
+            shootLevel++;
+        }
+    }
+
+    void DifficultyHandler()
+    {
+        //first minute
+        if (totalTime <= 300 && totalTime > 240)
+        {
+            maxExp = 10;
+
+            spawnRate = 1f;
+
+            slimeHealth = 10;
+            devilHealth = 20;
+        }
+        //second minute
+        else if (totalTime <= 240 && totalTime > 180)
+        {
+            maxExp = 15;
+
+            spawnRate = 0.5f;
+
+            slimeHealth = 15;
+            devilHealth = 25;
+        }
+        //third minute
+        else if (totalTime <= 180 && totalTime > 120)
+        {
+            maxExp = 30;
+
+            spawnRate = 0.2f;
+
+            slimeHealth = 20;
+            devilHealth = 30;
+        }
+        //fourth minute
+        else if (totalTime <= 120 && totalTime > 60)
+        {
+            maxExp = 50;
+
+            spawnRate = 0.1f;
+
+            slimeHealth = 35;
+            devilHealth = 50;
+        }
+        //last minute
+        else if (totalTime <= 60)
+        {
+            maxExp = 150;
+
+            spawnRate = 0.05f;
+
+            slimeHealth = 45;
+            devilHealth = 80;
+        }
+        
     }
     
 

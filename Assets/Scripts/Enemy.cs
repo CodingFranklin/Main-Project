@@ -8,6 +8,8 @@ public abstract class Enemy : MonoBehaviour
     protected Vector3 direction;
     protected float currentEnemyHealth;
     protected Rigidbody2D rb;
+    protected float knockbackDuration;
+    public bool isKnockBack;
 
     public GameObject XP; // XP prefab for dropping XP on death
     public GameObject damageText; // Damage text prefab for showing damage numbers
@@ -16,6 +18,8 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        knockbackDuration = GameManager.instance.knockBackDuation;
 
         // Find the player by tag if not set
         if (player == null)
@@ -29,7 +33,7 @@ public abstract class Enemy : MonoBehaviour
     // Abstract method for movement, to be implemented by subclasses
     protected virtual void Move(float moveSpeed)
     {
-        if (player != null)
+        if (player != null && !isKnockBack)
         {
             direction = (player.position - transform.position).normalized;
             rb.velocity = direction * moveSpeed;
@@ -67,5 +71,18 @@ public abstract class Enemy : MonoBehaviour
             TakeDamage(GameManager.instance.bulletDamage);
             Destroy(other.gameObject);
         }
+    }
+
+    public IEnumerator ApplyKnockback(Vector2 knockbackDirection)
+    {
+        isKnockBack = true;
+
+        PlayerController pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+        rb.AddForce(pc.knockBackForce * knockbackDirection, ForceMode2D.Impulse);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnockBack = false;
     }
 }

@@ -50,50 +50,40 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(moveDirection.x * moveSpeed, moveDirection.y * moveSpeed);
     }
 
-    IEnumerator CollisionisCoolDown()
-    {
-        takeDamageIsCoolDown = true;
-        yield return new WaitForSeconds(takeDamageCoolDownTime);
-        takeDamageIsCoolDown = false;
-    }
-
-
-    //perform the knock back system after player get hits
-    //
-    //STILL NOT WORKING YET!!!!!!
-    //
     void PlayerGetHit()
     {
-        Debug.Log("player get hit");
         Collider2D[] knockBackEnemies = Physics2D.OverlapCircleAll(transform.position, knockBackRadius);
 
         foreach (Collider2D enemy in knockBackEnemies)
         {
+            Enemy E = enemy.GetComponent<Enemy>();
+            E.isKnockBack = true;
             Vector3 knockBackDirection = (enemy.transform.position - transform.position).normalized;
 
-            // enemy.transform.position += (Vector3)(knockBackDirection * knockBackForce * Time.deltaTime);
-            enemy.GetComponent<Rigidbody2D>().AddForce(knockBackDirection * knockBackForce * Time.deltaTime, ForceMode2D.Impulse);
+            StartCoroutine(E.ApplyKnockback(knockBackDirection));
         }
     }
 
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        //does not work!!!
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Enemy" && !takeDamageIsCoolDown)
         {
-            PlayerGetHit();
-        }
-
-        if (!takeDamageIsCoolDown)
-        {
-            if (other.gameObject.tag == "Enemy")
-            {
-                GameManager.instance.DealDamageToPlayer(GameManager.instance.enemyDamage);
-            }
-
             StartCoroutine(CollisionisCoolDown());
+
+            GameManager.instance.DealDamageToPlayer(GameManager.instance.enemyDamage);
+            
+            PlayerGetHit();
+        
+            
         }
+    }
+
+    IEnumerator CollisionisCoolDown()
+    {
+        takeDamageIsCoolDown = true;
+        yield return new WaitForSeconds(takeDamageCoolDownTime);
+        takeDamageIsCoolDown = false;
     }
 
 

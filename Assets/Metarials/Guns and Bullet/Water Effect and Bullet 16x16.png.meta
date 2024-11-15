@@ -147,7 +147,7 @@ TextureImporter:
         width: 14
         height: 14
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -155,6 +155,69 @@ TextureImporter:
       bones: []
       spriteID: 581bb595b0e900a40a62ced291fdb16c
       internalID: -132093981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water Effect and Bullet 16x16_3
+      rect:
+        serializedVersion: 2
+        x: 417
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9e6012ff36d92142892e71e497ea6a1
+      internalID: 863525295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water Effect and Bullet 16x16_4
+      rect:
+        serializedVersion: 2
+        x: 401
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0bb07fe26ddf8642b71a239f72bed0c
+      internalID: 886493312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Water Effect and Bullet 16x16_5
+      rect:
+        serializedVersion: 2
+        x: 433
+        y: 192
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6931601a0ecc564185dc823e96c7adb
+      internalID: -1523952450
       vertices: []
       indices: 
       edges: []
@@ -173,6 +236,9 @@ TextureImporter:
       Water Effect and Bullet 16x16_0: 888566228
       Water Effect and Bullet 16x16_1: 902019118
       Water Effect and Bullet 16x16_2: -132093981
+      Water Effect and Bullet 16x16_3: 863525295
+      Water Effect and Bullet 16x16_4: 886493312
+      Water Effect and Bullet 16x16_5: -1523952450
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

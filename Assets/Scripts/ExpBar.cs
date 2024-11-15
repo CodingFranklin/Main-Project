@@ -34,6 +34,7 @@ public class ExpBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        maxExp = GameManager.instance.maxExp;
         currentExp = GameManager.instance.currentExp;
         currentLevel = GameManager.instance.level;
 
