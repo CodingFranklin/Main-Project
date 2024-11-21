@@ -15,10 +15,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField] AudioClip damageClip;
     Rigidbody2D rb;
     bool takeDamageIsCoolDown;
+    bool isSwordCoolDown;
+    float swordCoolDown;
+
+    Vector3 mousePosition;
+    Vector3 worldMousePositioin;
+    Vector3 mouseDirection;
     
     // Start is called before the first frame update
     void Start()
     {
+        isSwordCoolDown = false;
+
         rb = GetComponent<Rigidbody2D>();
         takeDamageIsCoolDown = false;
     }
@@ -27,13 +35,25 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         moveSpeed = GameManager.instance.playerMoveSpeed;
+        swordCoolDown = GameManager.instance.swordCoolDown;
+
+        mousePosition = Input.mousePosition;
+        worldMousePositioin = Camera.main.ScreenToWorldPoint(mousePosition);
+        mouseDirection = worldMousePositioin - transform.position;
+        mouseDirection.z = 0f;
 
         UpdateDirection();
         Move();
 
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2") && !isSwordCoolDown)
         {
-            Instantiate(sword, transform.position, Quaternion.identity);
+            float angle = Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg;
+            Quaternion swordRotation = Quaternion.Euler(0f, 0f, angle);
+
+            GameObject spawnSword = Instantiate(sword, transform.position, swordRotation, transform);
+            spawnSword.gameObject.GetComponent<Sword>().Instantiate(mouseDirection);
+
+            StartCoroutine(SwordCoolDown());
         }
     }
 
@@ -53,6 +73,7 @@ public class PlayerController : MonoBehaviour
             previousVertivcalVector = moveDirection.y;
         }
     }
+    
 
     void Move()
     {
@@ -103,6 +124,13 @@ public class PlayerController : MonoBehaviour
         takeDamageIsCoolDown = true;
         yield return new WaitForSeconds(takeDamageCoolDownTime);
         takeDamageIsCoolDown = false;
+    }
+
+    IEnumerator SwordCoolDown()
+    {
+        isSwordCoolDown = true;
+        yield return new WaitForSeconds(swordCoolDown);
+        isSwordCoolDown = false;
     }
 
 

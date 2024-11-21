@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
-    PlayerController playerController;
-    SpriteRenderer spriteRenderer;
-    Vector3 mousePosition;
-    Vector3 worldMousePositioin;
-    Vector3 mouseDirection;
 
     float swordDamge;
 
@@ -18,45 +13,66 @@ public class Sword : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 1f);
-
-        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
-        Attack();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         swordDamge = GameManager.instance.swordDamge;
-
-
-        //Calculating the mouse direction for the gun to follow
-        mousePosition = Input.mousePosition;
-        worldMousePositioin = Camera.main.ScreenToWorldPoint(mousePosition);
-        mouseDirection = worldMousePositioin - transform.position;
-        mouseDirection.z = 0f;
-        RotateSwordToMouse();
-
-        
     }
 
-    void Attack()
+    public void Instantiate(Vector3 dir)
     {
-        Vector3 dir = mouseDirection.normalized;
+        Destroy(gameObject, 0.3f);
+
+        RotateSwordToMouse(dir);
+
+        Attack(dir);
+
+    }
+
+    void Attack(Vector3 dir)
+    {
+        Vector3 start = Quaternion.AngleAxis(60, Vector3.forward) * dir;
+        Vector3 end = Quaternion.AngleAxis(-60, Vector3.forward) * dir;
+
+        // Convert the start and end directions to Quaternions
+        Quaternion startRotation = Quaternion.LookRotation(Vector3.forward, start);
+        Quaternion endRotation = Quaternion.LookRotation(Vector3.forward, end);
+
+        // Start the coroutine for smooth rotation
+        StartCoroutine(RotateOverTime(startRotation, endRotation, 0.2f));
 
         GameObject wave = Instantiate(meleeWave, transform.position, transform.rotation);
         wave.gameObject.GetComponent<Wave>().Instantiate(dir);
     }
 
-
-    void RotateSwordToMouse()
+    IEnumerator RotateOverTime(Quaternion start, Quaternion end, float duration)
     {
-        float angle = Mathf.Atan2(mouseDirection.y, mouseDirection.x) * Mathf.Rad2Deg;
+        float t = 0f;
+
+        while (t < duration)
+        {
+            // Interpolate between the start and end rotations
+            transform.rotation = Quaternion.Slerp(start, end, t / duration);
+
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the final rotation is exactly the end rotation
+        transform.rotation = end;
+    }
+
+
+    void RotateSwordToMouse(Vector3 dir)
+    {
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
+    
 
     private void OnTriggerEnter2D(Collider2D other) 
     {

@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     public float waveDamage;
     public float waveRange;
     public float waveSpeed;
+    public float swordCoolDown;
 
     
     //Exp
@@ -112,10 +113,13 @@ public class GameManager : MonoBehaviour
         upgradeOptions.Add("Ammo Capacity + 30%");
         upgradeOptions.Add("Reload Time - 20%");
         upgradeOptions.Add("Bullet Speed + 20%");
-        upgradeOptions.Add("Bullet + 1");
+        upgradeOptions.Add("Bullet Level + 1");
         upgradeOptions.Add("Bullet Penetration + 1");
         upgradeOptions.Add("Move Speed + 10%");
         upgradeOptions.Add("Visible Range + 1");
+        upgradeOptions.Add("Sword Damage + 30%");
+        upgradeOptions.Add("Wave Damage + 20%");
+        upgradeOptions.Add("Sword Cooldown - 10%");
 
         foreach (String option in upgradeOptions)
         {
@@ -174,9 +178,9 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (optionLevels["Bullet + 1"] == 2)
+        if (optionLevels["Bullet Level + 1"] == 2)
         {
-            upgradeOptions.Remove("Bullet + 1");
+            upgradeOptions.Remove("Bullet Level + 1");
         }
         
         if (optionLevels["Bullet Penetration + 1"] == 3)
@@ -468,7 +472,7 @@ public class GameManager : MonoBehaviour
         {
             bulletSpeed += bulletSpeed * 0.2f;
         }
-        else if (choice.Equals("Bullet + 1"))
+        else if (choice.Equals("Bullet Level + 1"))
         {
             shootLevel++;
         }
@@ -484,6 +488,18 @@ public class GameManager : MonoBehaviour
         {
             playerLight.pointLightInnerRadius += 1;
             playerLight.pointLightOuterRadius += 1;
+        }
+        else if (choice.Equals("Sword Damage + 30%"))
+        {
+            swordDamge += Mathf.FloorToInt(swordDamge * 0.3f);
+        }
+        else if (choice.Equals("Wave Damage + 20%"))
+        {
+            waveDamage += Mathf.FloorToInt(waveDamage * 0.2f);
+        }
+        else if (choice.Equals("Sword Cooldown - 10%"))
+        {
+            swordCoolDown -= swordCoolDown * 0.1f;
         }
 
 
