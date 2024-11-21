@@ -600,12 +600,12 @@ public class GameManager : MonoBehaviour
 
             spawnRate *= 0.7f;
 
-            slimeHealth += 20;
-            devilHealth += 40;
-            goblinHealth += 30;
-            skeletonHealth += 10;
-            pumpkinHealth += 10;
-            giantGoblinHealth += 50;
+            slimeHealth += 30;
+            devilHealth += 50;
+            goblinHealth += 40;
+            skeletonHealth += 20;
+            pumpkinHealth += 20;
+            giantGoblinHealth += 70;
         }
         
     }

@@ -118,8 +118,8 @@ public class Pistol : MonoBehaviour
             }
             else if (shootLevel == 2)
             {
-                Vector3 leftDirection = Quaternion.AngleAxis(15, Vector3.forward) * mouseDirection;
-                Vector3 rightDirection = Quaternion.AngleAxis(-15, Vector3.forward) * mouseDirection;
+                Vector3 leftDirection = Quaternion.AngleAxis(10, Vector3.forward) * mouseDirection;
+                Vector3 rightDirection = Quaternion.AngleAxis(-10, Vector3.forward) * mouseDirection;
 
 
                 //left
@@ -131,8 +131,8 @@ public class Pistol : MonoBehaviour
             }
             else if (shootLevel >= 3)
             {
-                Vector3 leftDirection = Quaternion.AngleAxis(15, Vector3.forward) * mouseDirection;
-                Vector3 rightDirection = Quaternion.AngleAxis(-15, Vector3.forward) * mouseDirection;
+                Vector3 leftDirection = Quaternion.AngleAxis(25, Vector3.forward) * mouseDirection;
+                Vector3 rightDirection = Quaternion.AngleAxis(-25, Vector3.forward) * mouseDirection;
 
                 //left
                 GameObject spawnBullet1 = Instantiate(bullet3, firePoint.position, firePoint.rotation);
