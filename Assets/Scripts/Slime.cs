@@ -5,6 +5,7 @@ using UnityEngine;
 public class Slime : Enemy
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] AudioClip slimeDieClip;
     float currentHealth;
 
     
@@ -27,14 +28,20 @@ public class Slime : Enemy
         base.Move(this.moveSpeed);
     }
 
-    public override void TakeDamage(float damage)
+    protected override void Die()
     {
-        base.ShowDamageText();
+        SoundEffectsManager.instance.PlaySoundEffectClip(slimeDieClip, transform, 1f);
+        base.Die();
+    }
+
+    public override void TakeDamage(float damage, string type)
+    {
+        base.ShowDamageText(type);
 
         if (currentHealth <= damage)
         {
             currentHealth = 0;
-            base.Die();
+            Die();
         }
         else
         {
@@ -47,8 +54,17 @@ public class Slime : Enemy
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            TakeDamage(GameManager.instance.bulletDamage);
-            Destroy(other.gameObject);
+            TakeDamage(GameManager.instance.bulletDamage, "Bullet");
+        }
+        if (other.gameObject.CompareTag("Sword"))
+        {
+            base.ShowDamageText("Sword");
+            TakeDamage(GameManager.instance.swordDamge, "Sword");
+        }
+        if (other.gameObject.CompareTag("Wave"))
+        {
+            base.ShowDamageText("Wave");
+            TakeDamage(GameManager.instance.waveDamage, "Wave");
         }
     }
 }

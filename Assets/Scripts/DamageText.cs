@@ -7,6 +7,7 @@ using System;
 public class DamageText : MonoBehaviour
 {
     public float duation = 1f;
+    public String damageType;
     private TextMesh textMesh;    
     private String damage;
 
@@ -15,7 +16,19 @@ public class DamageText : MonoBehaviour
     {
         textMesh = GetComponent<TextMesh>();
 
-        damage = GameManager.instance.bulletDamage.ToString();
+        if (damageType.Equals("Bullet"))
+        {
+            damage = GameManager.instance.bulletDamage.ToString();
+        }
+        else if (damageType.Equals("Sword"))
+        {
+            damage = GameManager.instance.swordDamge.ToString();
+        }
+        else if (damageType.Equals("Wave"))
+        {
+            damage = GameManager.instance.waveDamage.ToString();
+        }
+        
 
         Destroy(gameObject, duation);
     }

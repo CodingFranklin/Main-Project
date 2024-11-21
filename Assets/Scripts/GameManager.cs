@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,11 +17,17 @@ public class GameManager : MonoBehaviour
     public float currentPlayerHealth;
     public float maxPlayerHealth;
     public float knockBackDuation;
+    public float playerMoveSpeed;
 
     //Enemy
     public float slimeHealth;
     public float devilHealth;
+    public float goblinHealth;
+    public float skeletonHealth;
+    public float pumpkinHealth;
+    public float giantGoblinHealth;
     public float enemyDamage;
+    
 
     //Weapon
     public float bulletDamage;
@@ -29,6 +37,12 @@ public class GameManager : MonoBehaviour
     public float ammoCapacity;
     public float reloadTime;
     public float shootLevel;
+    public float maxPenetrations;
+    public float swordDamge;
+    public float waveDamage;
+    public float waveRange;
+    public float waveSpeed;
+
     
     //Exp
     public float ExpAmount ;
@@ -52,17 +66,26 @@ public class GameManager : MonoBehaviour
     [SerializeField] UnityEngine.UI.Image heart4;
     [SerializeField] UnityEngine.UI.Image heart5;
     [SerializeField] GameObject gameOverPage;
+    [SerializeField] GameObject pausePage;
+    [SerializeField] Button keepPlaying;
     [SerializeField] TextMeshProUGUI gameOverText;
     [SerializeField] RectTransform mouseIcon;
+    [SerializeField] Light2D playerLight;
     [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] TextMeshProUGUI timerText;
     [SerializeField] TextMeshProUGUI upgradeOption1Text;
     [SerializeField] TextMeshProUGUI upgradeOption2Text;
     [SerializeField] TextMeshProUGUI upgradeOption3Text;
+    [SerializeField] TextMeshProUGUI option1Level;
+    [SerializeField] TextMeshProUGUI option2Level;
+    [SerializeField] TextMeshProUGUI option3Level;
     [SerializeField] GameObject upgradePage;
+    [SerializeField] AudioClip upgradeClip;
+    [SerializeField] AudioClip victoryClip;
+    [SerializeField] AudioClip gameOverClip;
 
-    
-    
+    private Dictionary<string, int> optionLevels = new Dictionary<string, int>();
+
 
 
     private void Awake() 
@@ -76,28 +99,45 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
         isGameOver = false;
         Cursor.visible = false;
         isLevelUp = false;
 
 
-        upgradeOptions.Add("Bullet Damage + 20%");
-        upgradeOptions.Add("Pick-up Range + 20%");
+        upgradeOptions.Add("Bullet Damage + 30%");
+        upgradeOptions.Add("Pick-up Range + 15%");
         upgradeOptions.Add("Bullet Range + 20%");
-        upgradeOptions.Add("Shooting Speed + 30%");
+        upgradeOptions.Add("Shooting Speed + 20%");
         upgradeOptions.Add("Ammo Capacity + 30%");
         upgradeOptions.Add("Reload Time - 20%");
-        upgradeOptions.Add("Bullet Speed + 50%");
+        upgradeOptions.Add("Bullet Speed + 20%");
         upgradeOptions.Add("Bullet + 1");
+        upgradeOptions.Add("Bullet Penetration + 1");
+        upgradeOptions.Add("Move Speed + 10%");
+        upgradeOptions.Add("Visible Range + 1");
+
+        foreach (String option in upgradeOptions)
+        {
+            optionLevels[option] = 0;
+        }
     }
 
     // Update is called once per frame
     void Update()
-    {
-        if (!isLevelUp)
+    { 
+        //Pause the game by pressing Esc
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ResumeGame();
-            upgradePage.SetActive(false);
+            if (Mathf.Approximately(Time.timeScale, 0))
+            {
+                ResumeGameFromPausePage();
+            }
+            else
+            {
+                PauseGameWithKey();
+            }
+            return;
         }
 
         //make sure the pause also works for Update
@@ -106,8 +146,25 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (totalTime <= 0 || currentPlayerHealth <= 0)
+        
+        if (!isLevelUp)
         {
+            ResumeGame();
+            upgradePage.SetActive(false);
+        }
+
+        if (totalTime > 0)
+        {
+            totalTime -= Time.deltaTime;
+            UpdateTimerText();
+        }
+
+       
+
+        if (totalTime < 0 || currentPlayerHealth <= 0)
+        {
+            Debug.Log(isGameOver);
+            totalTime = -1;
             isGameOver = true;
         }
 
@@ -117,29 +174,32 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (optionLevels["Bullet + 1"] == 2)
+        {
+            upgradeOptions.Remove("Bullet + 1");
+        }
+        
+        if (optionLevels["Bullet Penetration + 1"] == 3)
+        {
+            upgradeOptions.Remove("Bullet Penetration + 1");
+        }
+
         
 
         HealthChecker();
         DifficultyHandler();
         
 
-        if (totalTime > 0)
-        {
-            totalTime -= Time.deltaTime;
-            UpdateTimerText();
+        
 
-            if (totalTime <= 0)
-            {
-                totalTime = 0;
-            }
-
-        }
+        
 
         Vector2 mousePosition = Input.mousePosition;
         mouseIcon.position = mousePosition;
 
         if (isLevelUp)
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(upgradeClip, transform, 1f);
             upgradePage.SetActive(true);
             PauseGame();
             RandomUpgradeOptions();
@@ -158,6 +218,18 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
     }
 
+    public void PauseGameWithKey()
+    {
+        pausePage.SetActive(true);
+        PauseGame();
+    }
+
+    public void ResumeGameFromPausePage()
+    {
+        pausePage.SetActive(false);
+        ResumeGame();
+    }
+
     public void DealDamageToPlayer(float damage)
     {
         if (currentPlayerHealth < damage)
@@ -172,18 +244,43 @@ public class GameManager : MonoBehaviour
 
     public void ResetGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void GameOver()
     {
-        if (currentPlayerHealth > 0)
-        {
-            gameOverText.text = "Victory!";
-        }
-        gameOverPage.SetActive(true);
         PauseGame();
         Cursor.visible = true;
+        gameOverPage.SetActive(true);
+
+        if (currentPlayerHealth > 0)
+        {
+            gameOverText.text = "You Survived!";
+            SoundEffectsManager.instance.PlaySoundEffectClip(victoryClip, transform, 1f);
+        }
+        else
+        {
+            SoundEffectsManager.instance.PlaySoundEffectClip(gameOverClip, transform, 1f);
+            gameOverText.text = "Oops You Died!";
+            keepPlaying.gameObject.SetActive(false);
+        }
+        
+    }
+
+    public void BacktoMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(0);
+    }
+
+    public void KeepPlaying()
+    {
+        totalTime = 0;
+        isGameOver = false;
+        gameOverPage.SetActive(false);
+        ResumeGame();
+        Cursor.visible = false;
     }
 
     void UpdateTimerText()
@@ -197,6 +294,16 @@ public class GameManager : MonoBehaviour
         else
         {
             timerText.text = minutes + ":" + seconds;
+        }
+
+        if (seconds == 0 && minutes == 0)
+        {
+            timerText.text = "00:00";
+        }
+
+        if (totalTime < 0)
+        {
+            timerText.text = "--:--";
         }
     }
 
@@ -278,19 +385,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void SkipUpgrade()
+    {
+        isLevelUp = false;
+    }
+
     public void RandomUpgradeOptions()
     {
         List<String> remainingOptions = new List<string>(upgradeOptions);
+
+        //option 1
         int a = UnityEngine.Random.Range(0,remainingOptions.Count);
         upgradeOption1Text.text = remainingOptions[a];
+        option1Level.text = "LV " + optionLevels[remainingOptions[a]] + " --> LV " + (optionLevels[remainingOptions[a]] + 1);
         remainingOptions.RemoveAt(a);
 
+        //option 2
         int b = UnityEngine.Random.Range(0,remainingOptions.Count);
         upgradeOption2Text.text = remainingOptions[b];
+        option2Level.text = "LV " + optionLevels[remainingOptions[b]] + " --> LV " + (optionLevels[remainingOptions[b]] + 1);
         remainingOptions.RemoveAt(b);
 
+        //option 3
         int c = UnityEngine.Random.Range(0,remainingOptions.Count);
         upgradeOption3Text.text = remainingOptions[c];
+        option3Level.text = "LV " + optionLevels[remainingOptions[c]] + " --> LV " + (optionLevels[remainingOptions[c]] + 1);
         remainingOptions.RemoveAt(c);
     }
 
@@ -315,21 +434,27 @@ public class GameManager : MonoBehaviour
 
     public void CheckUpgrade(String choice)
     {
-        if (choice.Equals("Bullet Damage + 20%"))
+        if (optionLevels.ContainsKey(choice))
         {
-            bulletDamage += Mathf.FloorToInt(bulletDamage * 0.2f);
+            optionLevels[choice]++;
         }
-        else if (choice.Equals("Pick-up Range + 20%"))
+
+
+        if (choice.Equals("Bullet Damage + 30%"))
         {
-            ExpPickUpRange += ExpPickUpRange * 0.2f;
+            bulletDamage += Mathf.FloorToInt(bulletDamage * 0.3f);
+        }
+        else if (choice.Equals("Pick-up Range + 15%"))
+        {
+            ExpPickUpRange += ExpPickUpRange * 0.15f;
         }
         else if (choice.Equals("Bullet Range + 20%"))
         {
             bulletRange += bulletRange * 0.2f;
         }
-        else if (choice.Equals("Shooting Speed + 30%"))
+        else if (choice.Equals("Shooting Speed + 20%"))
         {
-            gunFireRate -= gunFireRate * 0.3f;
+            gunFireRate -= gunFireRate * 0.2f;
         }
         else if (choice.Equals("Ammo Capacity + 30%"))
         {
@@ -339,14 +464,31 @@ public class GameManager : MonoBehaviour
         {
             reloadTime -= reloadTime * 0.2f;
         }
-        else if (choice.Equals("Bullet Speed + 50%"))
+        else if (choice.Equals("Bullet Speed + 20%"))
         {
-            bulletSpeed += bulletSpeed * 0.5f;
+            bulletSpeed += bulletSpeed * 0.2f;
         }
         else if (choice.Equals("Bullet + 1"))
         {
             shootLevel++;
         }
+        else if (choice.Equals("Bullet Penetration + 1"))
+        {
+            maxPenetrations++;
+        }
+        else if (choice.Equals("Move Speed + 10%"))
+        {
+            playerMoveSpeed += playerMoveSpeed * 0.1f;
+        }
+        else if (choice.Equals("Visible Range + 1"))
+        {
+            playerLight.pointLightInnerRadius += 1;
+            playerLight.pointLightOuterRadius += 1;
+        }
+
+
+
+        
     }
 
     void DifficultyHandler()
@@ -360,6 +502,10 @@ public class GameManager : MonoBehaviour
 
             slimeHealth = 10;
             devilHealth = 20;
+            goblinHealth = 15;
+            skeletonHealth = 10;
+            pumpkinHealth = 10;
+            giantGoblinHealth = 30;
         }
         //second minute
         else if (totalTime <= 240 && totalTime > 180)
@@ -370,6 +516,10 @@ public class GameManager : MonoBehaviour
 
             slimeHealth = 15;
             devilHealth = 25;
+            goblinHealth = 20;
+            skeletonHealth = 15;
+            pumpkinHealth = 15;
+            giantGoblinHealth = 40;
         }
         //third minute
         else if (totalTime <= 180 && totalTime > 120)
@@ -380,6 +530,10 @@ public class GameManager : MonoBehaviour
 
             slimeHealth = 20;
             devilHealth = 30;
+            goblinHealth = 25;
+            skeletonHealth = 20;
+            pumpkinHealth = 20;
+            giantGoblinHealth = 50;
         }
         //fourth minute
         else if (totalTime <= 120 && totalTime > 60)
@@ -390,9 +544,13 @@ public class GameManager : MonoBehaviour
 
             slimeHealth = 35;
             devilHealth = 50;
+            goblinHealth = 45;
+            skeletonHealth = 30;
+            pumpkinHealth = 25;
+            giantGoblinHealth = 70;
         }
         //last minute
-        else if (totalTime <= 60)
+        else if (totalTime <= 60 && totalTime > 30)
         {
             maxExp = 150;
 
@@ -400,6 +558,38 @@ public class GameManager : MonoBehaviour
 
             slimeHealth = 45;
             devilHealth = 80;
+            goblinHealth = 55;
+            skeletonHealth = 40;
+            pumpkinHealth = 30;
+            giantGoblinHealth = 100;
+        }
+        //last 30 seconds
+        else if (totalTime <= 30 && totalTime != 0)
+        {
+            maxExp = 250;
+
+            spawnRate = 0.01f;
+
+            slimeHealth = 60;
+            devilHealth = 100;
+            goblinHealth = 70;
+            skeletonHealth = 50;
+            pumpkinHealth = 40;
+            giantGoblinHealth = 150;
+        }
+        //After clicking Keep Playing (infinite mode)
+        else if (totalTime == 0 && isLevelUp)
+        {
+            maxExp += 50;
+
+            spawnRate *= 0.7f;
+
+            slimeHealth += 20;
+            devilHealth += 40;
+            goblinHealth += 30;
+            skeletonHealth += 10;
+            pumpkinHealth += 10;
+            giantGoblinHealth += 50;
         }
         
     }

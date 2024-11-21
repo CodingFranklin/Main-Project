@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,7 +42,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
     // Method to deal damage to the enemy, with a virtual method for additional behaviors
-    public abstract void TakeDamage(float damage);
+    public abstract void TakeDamage(float damage, string type);
 
     // Method to drop XP when the enemy dies
     protected virtual void DropXP()
@@ -50,9 +51,15 @@ public abstract class Enemy : MonoBehaviour
     }
 
     // Method to show damage text
-    protected virtual void ShowDamageText()
+    protected virtual void ShowDamageText(string type)
     {
+        Debug.Log(type);
         GameObject textInstance = Instantiate(damageText, transform.position, Quaternion.identity);
+
+        DamageText dt = textInstance.GetComponent<DamageText>();
+        dt.damageType = type;
+        Debug.Log(type);
+
         textInstance.transform.SetParent(null); 
     }
 
@@ -68,8 +75,7 @@ public abstract class Enemy : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Bullet"))
         {
-            TakeDamage(GameManager.instance.bulletDamage);
-            Destroy(other.gameObject);
+            TakeDamage(GameManager.instance.bulletDamage, "Bullet");
         }
     }
 

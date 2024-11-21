@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     public float knockBackForce = 5f;
     public float knockBackRadius = 3f;
     [SerializeField] float takeDamageCoolDownTime;
+    [SerializeField] GameObject sword;
+    [SerializeField] AudioClip damageClip;
     Rigidbody2D rb;
     bool takeDamageIsCoolDown;
     
@@ -24,8 +26,15 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        moveSpeed = GameManager.instance.playerMoveSpeed;
+
         UpdateDirection();
         Move();
+
+        if (Input.GetButtonDown("Fire2"))
+        {
+            Instantiate(sword, transform.position, Quaternion.identity);
+        }
     }
 
     void UpdateDirection()
@@ -57,23 +66,33 @@ public class PlayerController : MonoBehaviour
         foreach (Collider2D enemy in knockBackEnemies)
         {
             Enemy E = enemy.GetComponent<Enemy>();
-            E.isKnockBack = true;
-            Vector3 knockBackDirection = (enemy.transform.position - transform.position).normalized;
+            if (E != null)
+            {
+                E.isKnockBack = true;
+                Vector3 knockBackDirection = (enemy.transform.position - transform.position).normalized;
 
-            StartCoroutine(E.ApplyKnockback(knockBackDirection));
+                StartCoroutine(E.ApplyKnockback(knockBackDirection));
+            }
         }
     }
 
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if (other.gameObject.tag == "Enemy" && !takeDamageIsCoolDown)
+        if ((other.gameObject.tag == "Devil" || other.gameObject.tag == "Slime" ||
+        other.gameObject.tag == "Goblin" || other.gameObject.tag == "Giant Goblin" ||
+        other.gameObject.tag == "Skeleton" || other.gameObject.tag == "Pumpkin")
+         && !takeDamageIsCoolDown)
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(damageClip, transform, 1f);
+            
             StartCoroutine(CollisionisCoolDown());
 
             GameManager.instance.DealDamageToPlayer(GameManager.instance.enemyDamage);
             
             PlayerGetHit();
+
+            
         
             
         }

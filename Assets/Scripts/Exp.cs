@@ -5,6 +5,7 @@ using UnityEngine;
 public class Exp : MonoBehaviour
 {
     [SerializeField] float moveSpeed;
+    [SerializeField] AudioClip expPick;
 
     Transform player;
     Rigidbody2D rb;
@@ -37,6 +38,7 @@ public class Exp : MonoBehaviour
 
         if (other.gameObject.tag == "Player")
         {
+            SoundEffectsManager.instance.PlaySoundEffectClip(expPick, transform, 0.2f);
             Destroy(gameObject);
             GameManager.instance.AddXP();
         }

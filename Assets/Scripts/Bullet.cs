@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
     Vector3 initialPosition;
 
     float speed;
+    float maxPenetrations;
 
     
     
@@ -18,7 +19,9 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        range = GameManager.instance.bulletRange;
+        speed = GameManager.instance.bulletSpeed;
+        maxPenetrations = GameManager.instance.maxPenetrations;
     }
 
     
@@ -26,10 +29,6 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        range = GameManager.instance.bulletRange;
-        speed = GameManager.instance.bulletSpeed;
-
-
         transform.position += direction.normalized * speed * Time.deltaTime;
         
 
@@ -51,9 +50,18 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other) 
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.gameObject.tag == "Devil" || other.gameObject.tag == "Slime" ||
+        other.gameObject.tag == "Goblin" || other.gameObject.tag == "Giant Goblin" ||
+        other.gameObject.tag == "Skeleton" || other.gameObject.tag == "Pumpkin")
         {
-            other.GetComponent<Enemy>().TakeDamage(GameManager.instance.bulletDamage);
+            other.GetComponent<Enemy>().TakeDamage(GameManager.instance.bulletDamage, "Bullet");
+
+            if (maxPenetrations > 0)
+            {
+                maxPenetrations--;
+                return;
+            }
+            Destroy (gameObject);
         }
     }
 

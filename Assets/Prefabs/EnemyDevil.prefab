@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 9049693499174397193}
   m_Layer: 0
   m_Name: EnemyDevil
-  m_TagString: Untagged
+  m_TagString: Devil
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -183,6 +183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125959fea1c07cf4b838d4758ff6195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isKnockBack: 0
   XP: {fileID: 5381786828086879555, guid: 73fad1aff0453e14a9ab7754be7dd367, type: 3}
   damageText: {fileID: 2391477696914829023, guid: 0bb93836f35aa9f4e9e9b250dd4a4a94, type: 3}
   moveSpeed: 1
+  devilDieClip: {fileID: 8300000, guid: 7eb694fe326c2194198fa7bff5d12fe5, type: 3}

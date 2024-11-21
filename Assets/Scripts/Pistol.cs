@@ -23,8 +23,11 @@ public class Pistol : MonoBehaviour
     [SerializeField] GameObject bullet1;
     [SerializeField] GameObject bullet2;
     [SerializeField] GameObject bullet3;
+    [SerializeField] GameObject fireEffect;
+    [SerializeField] Transform effectPoint;
     [SerializeField] Transform player;
     [SerializeField] TextMeshProUGUI ammoText;
+    [SerializeField] AudioClip shootClip;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,6 +35,7 @@ public class Pistol : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         isReloading = false;
         currentAmmo = GameManager.instance.ammoCapacity;
+        effectPoint.rotation *= Quaternion.Euler(0, 0, 180);
     }
 
     // Update is called once per frame
@@ -67,8 +71,8 @@ public class Pistol : MonoBehaviour
                 return;
             }
 
-
             Shoot();
+
             if (currentAmmo == 0)
             {
                 Reload();
@@ -100,6 +104,12 @@ public class Pistol : MonoBehaviour
         if (!isReloading && currentAmmo > 0 && Time.time > canFire)
         {
             canFire = Time.time + GameManager.instance.gunFireRate;
+
+            //fire effects
+            Instantiate(fireEffect, effectPoint.position, effectPoint.rotation);
+
+            //audio
+            SoundEffectsManager.instance.PlaySoundEffectClip(shootClip, transform, 1f);
 
             if (shootLevel == 1)
             {

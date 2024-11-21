@@ -483,7 +483,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -491,6 +491,27 @@ TextureImporter:
       bones: []
       spriteID: 6fe6c126f7e38ee478680c33813c87fb
       internalID: 1667115162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Green Effect and Bullet 16x16_19
+      rect:
+        serializedVersion: 2
+        x: 485
+        y: 0
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 223897b898063ff4995692ce41ea1fc4
+      internalID: -842488542
       vertices: []
       indices: 
       edges: []
@@ -517,6 +538,7 @@ TextureImporter:
       Green Effect and Bullet 16x16_16: 1404969562
       Green Effect and Bullet 16x16_17: -2088423638
       Green Effect and Bullet 16x16_18: 1667115162
+      Green Effect and Bullet 16x16_19: -842488542
       Green Effect and Bullet 16x16_2: -709811193
       Green Effect and Bullet 16x16_3: 906301102
       Green Effect and Bullet 16x16_4: -756597664

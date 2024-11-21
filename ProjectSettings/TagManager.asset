@@ -12,6 +12,14 @@ TagManager:
   - Heart3
   - Heart4
   - Heart5
+  - Devil
+  - Slime
+  - Goblin
+  - Skeleton
+  - Pumpkin
+  - Giant Goblin
+  - Sword
+  - Wave
   layers:
   - Default
   - TransparentFX
@@ -48,4 +56,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: weapon
+    uniqueID: 2223374921
     locked: 0
